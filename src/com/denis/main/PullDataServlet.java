@@ -3,6 +3,7 @@ package com.denis.main;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -38,6 +39,9 @@ public class PullDataServlet extends HttpServlet {
 		List<Event> orders = AppDirectIntegrationServlet.orders;
 		List<Event> changes = AppDirectIntegrationServlet.changes;
 		List<Event> cancellations = AppDirectIntegrationServlet.cancellations;
+		HashMap<String, Event> users = AppDirectIntegrationServlet.users;
+		
+		
 		// top level object placeholder for holding the different subscription events
 				JSONObject eventObject = new JSONObject();
 				
@@ -72,6 +76,17 @@ public class PullDataServlet extends HttpServlet {
 					jsonArray.put(json);
 				}
 				eventObject.put("cancellations", jsonArray);
+				
+				
+				// add the users assigned
+				jsonArray = new JSONArray();
+				for(Event e:users.values()){
+					JSONObject json = new JSONObject();
+					json.put("createdBy", e.getCreator().getFirstName() + " " + e.getCreator().getLastName());
+					json.put("assignedUsers", e.getPayload().getUser().getFirstName() + "  " + e.getPayload().getUser().getLastName());
+					jsonArray.put(json);
+				}
+				eventObject.put("users", jsonArray);
 				
 				//System.out.println(jsonArray.toString());
 				return eventObject.toString();

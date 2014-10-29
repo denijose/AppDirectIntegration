@@ -58,6 +58,34 @@
 				 }
 				 if(cancellations.length > 0)
 		 			document.getElementById("tableDivCancellations").appendChild(table);
+				 
+					//create the users assigned Table
+					document.getElementById("tableDivUserAssignments").innerHTML = "";
+					 var table = document.createElement('table');
+					 table.className = "table table-striped table-hover";
+					 table.innerHTML = "<tr><td>Created By</td><td>User Assigned</td><td>";
+					 var users = jsonResponse.users;
+					 for(var i=0;i<users.length;i++){
+						 var createdBy = users[i].createdBy;
+						 var assignedUsers = users[i].assignedUsers;
+						 table.innerHTML += "<tr><td>"+ createdBy +"</td><td>"+assignedUsers+"</td><td>";
+					 }
+					 if(users.length > 0)
+			 			document.getElementById("tableDivUserAssignments").appendChild(table);		 
+					 
+// 						//create the users unAssigned Table
+// 						document.getElementById("tableDivUserUnassignments").innerHTML = "";
+// 						 var table = document.createElement('table');
+// 						 table.className = "table table-striped table-hover";
+// 						 table.innerHTML = "<tr><td>Created By</td><td>User UnAssigned</td><td>";
+// 						 var usersUnAssigned = jsonResponse.usersUnAssigned;
+// 						 for(var i=0;i<usersUnAssigned.length;i++){
+// 							 var createdBy = users[i].createdBy;
+// 							 var unAssignedUsers = users[i].unAssignedUsers;
+// 							 table.innerHTML += "<tr><td>"+ createdBy +"</td><td>"+unAssignedUsers+"</td><td>";
+// 						 }
+// 						 if(usersUnAssigned.length > 0)
+// 				 			document.getElementById("tableDivUserUnassignments").appendChild(table);		 
 	}
 </script>
 </head>
@@ -122,6 +150,14 @@
           <div class="table-responsive">
             <div id="tableDivCancellations"></div>	
           </div>
+          <h2 class="sub-header">User Assignments</h2>
+          <div class="table-responsive">
+            <div id="tableDivUserAssignments"></div>	
+          </div>
+<!--           <h2 class="sub-header">User Unassignments</h2> -->
+<!--           <div class="table-responsive"> -->
+<!--             <div id="tableDivUserUnassignments"></div>	 -->
+<!--           </div> -->
         </div>
       </div>
     </div>

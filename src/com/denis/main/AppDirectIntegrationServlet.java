@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -37,6 +38,7 @@ public class AppDirectIntegrationServlet extends HttpServlet {
 	public static List<Event> orders = new ArrayList<Event>();
 	public static List<Event> changes = new ArrayList<Event>();
 	public static List<Event> cancellations = new ArrayList<Event>();
+	public static HashMap<String, Event> users = new HashMap<String, Event>();
 	
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)	throws IOException, ServletException, IOException {
@@ -96,9 +98,21 @@ public class AppDirectIntegrationServlet extends HttpServlet {
 		    String accountIdentifier = event.getPayload().getAccount().getAccountIdentifier();
 		    return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><result><success>true</success><message>Subscription cancellation successful</message><accountIdentifier>"+ accountIdentifier +"</accountIdentifier></result>";
 			
-		}    
+		}   
+		if(event.getType().equalsIgnoreCase("USER_ASSIGNMENT")){
+			String userID = event.getPayload().getUser().getEmail();
+			users.put(userID, event);
+		    String userName = event.getPayload().getUser().getFirstName() + " " + event.getPayload().getUser().getLastName();
+		    return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><result><success>true</success><message>User Successfully Assigned</message><userName>"+ userName+"</userName></result>";
+		}  
+		if(event.getType().equalsIgnoreCase("USER_UNASSIGNMENT")){
+			String userID = event.getPayload().getUser().getEmail();
+		    users.remove(userID);
+		    String userName = event.getPayload().getUser().getFirstName() + " " + event.getPayload().getUser().getLastName();
+		    return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><result><success>true</success><message>User Successfully Removed</message><userName>"+ userName+"</userName></result>";
+		}  
 		
-		return null;
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><result><success>true</success><message></message></result>";
 		
 		
 	}
