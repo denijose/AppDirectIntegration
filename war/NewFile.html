@@ -1,0 +1,18 @@
+@(firstName: String)(lastName: String)(openId: String)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Welcome to Mighty Spire</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    </head>
+    <body>
+        <div>
+            <h2>Hello @firstName @lastName</h2>
+            <p>Your openId is: @openId</p>
+            <p><a href="/logout">Log Out</a></p>
+        </div>
+    </body>
+</html>
